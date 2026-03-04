@@ -20,3 +20,12 @@ mybatis-plus:
     # 开启驼峰命名自动映射（数据库里的 receipt_image_url 会自动对应 Java 里的 receiptImageUrl）
     map-underscore-to-camel-case: true
 
+# application-template.yml (提交到 GitHub)
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: ${OSS_KEY:your_key_here}
+    access-key-secret: ${OSS_SECRET:your_secret_here}
+    bucket-name: ai-accounting-tool
+  dashscope:
+    api-key: ${DASHSCOPE_KEY:your_api_key_here}
