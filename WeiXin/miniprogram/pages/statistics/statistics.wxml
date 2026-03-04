@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="header">
+    <text class="title">支出统计</text>
+  </view>
+
+  <view class="filter-tabs">
+    <view 
+      class="tab {{currentFilter === 'week' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-filter="week"
+    >本周</view>
+    <view 
+      class="tab {{currentFilter === 'month' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-filter="month"
+    >本月</view>
+    <view 
+      class="tab {{currentFilter === 'year' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-filter="year"
+    >本年</view>
+  </view>
+
+  <view class="total-section">
+    <text class="total-label">总支出</text>
+    <text class="total-amount">¥{{totalAmount}}</text>
+  </view>
+
+  <view class="chart-container">
+    <canvas 
+      type="2d" 
+      id="pieChart" 
+      class="pie-chart"
+      style="width: {{chartWidth}}px; height: {{chartHeight}}px;"
+    ></canvas>
+  </view>
+
+  <view class="legend-section">
+    <view class="legend-item" wx:for="{{categoryData}}" wx:key="category">
+      <view class="legend-color" style="background: {{item.color}}"></view>
+      <text class="legend-name">{{item.category}}</text>
+      <text class="legend-amount">¥{{item.amount}}</text>
+      <text class="legend-percent">{{item.percent}}%</text>
+    </view>
+  </view>
+
+  <view class="record-list">
+    <text class="list-title">记录明细</text>
+    <view class="record-item" wx:for="{{filteredRecords}}" wx:key="id">
+      <image class="record-image" src="{{item.imagePath || '/assets/icons/record.png'}}" mode="aspectFill"></image>
+      <view class="record-info">
+        <text class="record-category">{{item.category}}</text>
+        <text class="record-note" wx:if="{{item.note}}">{{item.note}}</text>
+        <text class="record-time">{{item.createTimeStr}}</text>
+      </view>
+      <text class="record-amount">-¥{{item.amount}}</text>
+    </view>
+    <view wx:if="{{filteredRecords.length === 0}}" class="empty-tip">
+      <text>暂无记录</text>
+    </view>
+  </view>
+
+  <view class="bottom-padding"></view>
+  <custom-tabbar currentTab="1"></custom-tabbar>
+</view>

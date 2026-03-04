@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/add-record/add-record",
+    "pages/statistics/statistics"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#667eea",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/add-record/add-record",
+        "text": "记账"
+      },
+      {
+        "pagePath": "pages/statistics/statistics",
+        "text": "统计"
+      }
+    ]
+  },
+  "style": "v2",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "defaultContentBox": true,
+      "tagNameStyleIsolation": "legacy",
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

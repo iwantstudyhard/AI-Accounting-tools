@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "添加记录",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "custom-tabbar": "/components/custom-tabbar/custom-tabbar"
+  }
+}

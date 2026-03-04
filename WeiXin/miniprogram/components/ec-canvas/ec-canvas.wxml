@@ -1,0 +1,10 @@
+<view class="ec-canvas">
+  <canvas 
+    type="2d" 
+    id="canvas" 
+    class="canvas"
+    bindtouchstart="touchStart" 
+    bindtouchmove="touchMove" 
+    bindtouchend="touchEnd"
+  ></canvas>
+</view>

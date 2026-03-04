@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="header">
+    <text class="title">拍照记账</text>
+    <text class="subtitle">上传小票照片，记录支出</text>
+  </view>
+
+  <view class="upload-area" bindtap="chooseImage">
+    <image 
+      wx:if="{{tempImagePath}}" 
+      src="{{tempImagePath}}" 
+      mode="aspectFit" 
+      class="preview-image"
+    />
+    <view wx:else class="upload-placeholder">
+      <text class="icon">📷</text>
+      <text class="text">点击拍照/上传</text>
+    </view>
+  </view>
+
+  <view class="form-section" wx:if="{{tempImagePath}}">
+    <view class="form-item">
+      <text class="label">金额</text>
+      <input 
+        class="input" 
+        type="digit" 
+        placeholder="请输入金额" 
+        bindinput="onAmountInput"
+        value="{{amount}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="label">分类</text>
+      <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+        <view class="picker">
+          {{categories[selectedCategory] || '请选择分类'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">备注</text>
+      <input 
+        class="input" 
+        placeholder="可选备注" 
+        bindinput="onNoteInput"
+        value="{{note}}"
+      />
+    </view>
+
+    <button class="save-btn" bindtap="saveRecord">保存记录</button>
+  </view>
+
+  <custom-tabbar currentTab="0"></custom-tabbar>
+</view>

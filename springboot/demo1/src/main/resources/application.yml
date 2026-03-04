@@ -1,0 +1,22 @@
+
+spring:
+  datasource:
+    # 数据库驱动（MySQL 8.x 及以上使用这个）
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接地址
+    # 注意：这里的 localhost:3306 是你本地开发用的。等你以后用 Docker 部署时，这里再改成云服务器的内网 IP 或容器名。
+    # ai_accounting 是刚才创建的数据库名。serverTimezone 确保了时间存入数据库不会错乱。
+    url: jdbc:mysql://localhost:3306/Accounting tool?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    # 你的数据库账号
+    username: root
+    # 你的数据库密码
+    password: 
+
+# MyBatis-Plus 的进阶配置（强烈建议加上）
+mybatis-plus:
+  configuration:
+    # 在控制台打印出底层生成的 SQL 语句，这对于前期排查 Bug 和确认数据是否正确保存非常有帮助
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启驼峰命名自动映射（数据库里的 receipt_image_url 会自动对应 Java 里的 receiptImageUrl）
+    map-underscore-to-camel-case: true
+
