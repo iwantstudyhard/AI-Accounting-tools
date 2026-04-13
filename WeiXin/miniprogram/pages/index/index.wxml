@@ -1,0 +1,36 @@
+<!--pages/index/index.wxml-->
+<view class="page-container">
+  
+  <view class="full-screen-bg" 
+        style="background: {{bgType === 'color' ? bgColor : 'url(' + bgImage + ') center/cover no-repeat'}}">
+    <view class="bg-overlay"></view>
+  </view>
+
+  <view class="content-wrapper">
+    
+    <view class="header-section">
+      <view class="ai-tag">AI POWERED</view>
+      <view class="brand-title">
+        <text class="light">智能</text>
+        <text class="bold">芯记账</text>
+      </view>
+      <view class="slogan">让每一分开支都有迹可循</view>
+    </view>
+
+    <view class="footer-section">
+      <block wx:if="{{!hasLogin}}">
+        <button class="glass-btn login-btn" bindtap="handleLogin">
+          <text>一键开启智能生活</text>
+        </button>
+        <view class="protocol-text">点击登录即代表同意用户协议</view>
+      </block>
+      
+      <block wx:else>
+        <button class="glass-btn start-btn" bindtap="goToAddBill">
+          <text>开始记账</text>
+        </button>
+      </block>
+    </view>
+
+  </view>
+</view>

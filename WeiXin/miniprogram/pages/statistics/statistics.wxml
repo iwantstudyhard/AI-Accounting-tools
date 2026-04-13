@@ -1,7 +1,24 @@
-<view class="container">
+<view class="container" style="background: {{backgroundType === 'image' ? '' : backgroundColor}}">
+  <image wx:if="{{backgroundType === 'image' && backgroundImage}}" 
+         src="{{backgroundImage}}" 
+         mode="aspectFill" 
+         class="bg-image">
+  </image>
+
   <view class="header">
-    <text class="title">支出统计</text>
+    <view class="nav-bar">
+      <view class="nav-left" bindtap="openSettings" hover-class="icon-hover">
+        <text class="theme-icon">🎨</text>
+      </view>
+
+      <view class="nav-center">
+        <text class="title">支出统计</text>
+      </view>
+
+      <view class="nav-right"></view>
+    </view>
   </view>
+
 
   <view class="filter-tabs">
     <view 
@@ -19,6 +36,20 @@
       bindtap="onFilterChange" 
       data-filter="year"
     >本年</view>
+    <view 
+      class="tab {{currentFilter === 'all' ? 'active' : ''}}" 
+      bindtap="onFilterChange" 
+      data-filter="all"
+    >全部</view>
+  </view>
+
+  <view class="category-filter">
+    <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+      <view class="category-picker">
+        <text class="category-text">{{categories[selectedCategory]}}</text>
+        <text class="arrow">▼</text>
+      </view>
+    </picker>
   </view>
 
   <view class="total-section">
@@ -26,7 +57,7 @@
     <text class="total-amount">¥{{totalAmount}}</text>
   </view>
 
-  <view class="chart-container">
+  <view class="chart-container" wx:if="{{showChart}}">
     <canvas 
       type="2d" 
       id="pieChart" 
@@ -46,9 +77,8 @@
 
   <view class="record-list">
     <text class="list-title">记录明细</text>
-    <view class="record-item" wx:for="{{filteredRecords}}" wx:key="id">
-      <image class="record-image" src="{{item.imagePath || '/assets/icons/record.png'}}" mode="aspectFill"></image>
-      <view class="record-info">
+    <view class="record-item" wx:for="{{filteredRecords}}" wx:key="id" bindtap="onRecordTap" data-record="{{item}}">
+      <view class="record-left">
         <text class="record-category">{{item.category}}</text>
         <text class="record-note" wx:if="{{item.note}}">{{item.note}}</text>
         <text class="record-time">{{item.createTimeStr}}</text>
@@ -60,6 +90,91 @@
     </view>
   </view>
 
+  <view class="detail-modal" wx:if="{{showDetail}}" bindtap="onCloseDetail" catchtouchmove="preventTouchMove">
+    
+    <view class="detail-content" catchtap="noop">
+      
+      <view class="detail-header">
+        <view class="detail-title">详细信息</view>
+        <view class="detail-close" bindtap="onCloseDetail">×</view>
+      </view>
+
+      <view class="detail-modal" wx:if="{{showDetail}}">
+  <view class="detail-mask" bindtap="onCloseDetail" catchtouchmove="preventTouchMove"></view>
+
+  <view class="detail-content">
+    <view class="detail-header">
+      <view class="detail-title">账单详情</view>
+      <view class="detail-close" bindtap="onCloseDetail">×</view>
+    </view>
+
+    <view class="detail-body" wx:if="{{detailRecord}}">
+      
+      <view class="detail-image-area">
+        <image class="detail-image" src="{{detailRecord.imagePath || '/pages/statistics/404.png'}}" mode="aspectFit"></image>
+      </view>
+      
+      <view class="detail-info">
+        <view class="detail-row">
+          <view class="detail-label">分类</view>
+          <view class="detail-value">{{detailRecord.category}}</view>
+        </view>
+        <view class="detail-row">
+          <view class="detail-label">金额</view>
+          <view class="detail-value detail-amount">¥{{detailRecord.amount}}</view>
+        </view>
+        <view class="detail-row">
+          <view class="detail-label">时间</view>
+          <view class="detail-value">{{detailRecord.createTimeStr}}</view>
+        </view>
+        <view class="detail-row" wx:if="{{detailRecord.note}}">
+          <view class="detail-label">备注</view>
+          <view class="detail-value">{{detailRecord.note}}</view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>
+
+    </view>
+  </view>
+
   <view class="bottom-padding"></view>
   <custom-tabbar currentTab="1"></custom-tabbar>
+
+  <cover-view class="settings-modal" wx:if="{{showSettings}}" bindtap="closeSettings">
+    <cover-view class="settings-content" catchtap="true">
+      <cover-view class="settings-header">
+        <cover-view class="settings-title">背景设置</cover-view>
+        <cover-view class="settings-close" bindtap="closeSettings">×</cover-view>
+      </cover-view>
+      <cover-view class="settings-body">
+        <cover-view class="settings-section">
+          <cover-view class="section-title">选择背景颜色</cover-view>
+          <cover-view class="color-list">
+            <cover-view 
+              wx:for="{{colorOptions}}" 
+              wx:key="index" 
+              class="color-item {{backgroundColor === item ? 'selected' : ''}}"
+              style="background: {{item}}"
+              bindtap="selectColor"
+              data-color="{{item}}"
+            ></cover-view>
+          </cover-view>
+        </cover-view>
+        <cover-view class="settings-section">
+          <cover-view class="section-title">上传背景图片</cover-view>
+          <cover-view class="upload-bg" bindtap="chooseBackgroundImage">
+            <cover-image wx:if="{{backgroundImage}}" src="{{backgroundImage}}" mode="aspectFill" class="bg-preview"></cover-image>
+            <cover-view wx:else class="upload-tip">
+              <cover-view class="upload-icon">📷</cover-view>
+              <cover-view class="upload-text">点击上传图片</cover-view>
+            </cover-view>
+          </cover-view>
+          <cover-view class="clear-bg" wx:if="{{backgroundImage}}" bindtap="clearBackgroundImage">清除图片</cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>
 </view>

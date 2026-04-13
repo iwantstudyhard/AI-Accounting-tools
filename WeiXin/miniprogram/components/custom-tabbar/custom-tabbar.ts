@@ -25,16 +25,18 @@ Component({
       
       const url = index === 0 ? '/pages/add-record/add-record' : '/pages/statistics/statistics';
       
-      wx.switchTab({
+      wx.navigateTo({
         url: url,
-        success: (res) => {
-          console.log('跳转成功:', url);
-        },
         fail: (err) => {
-          console.error('跳转失败:', err);
-          wx.showToast({
-            title: '跳转失败',
-            icon: 'none'
+          wx.redirectTo({
+            url: url,
+            fail: (redirectErr) => {
+              console.error('跳转失败:', redirectErr);
+              wx.showToast({
+                title: '跳转失败',
+                icon: 'none'
+              });
+            }
           });
         }
       });

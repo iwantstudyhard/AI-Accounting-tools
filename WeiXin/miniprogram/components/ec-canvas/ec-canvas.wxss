@@ -1,9 +1,39 @@
+/* pages/statistics/statistics.wxss */
 .ec-canvas {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 500rpx;
+  margin: 40rpx auto;
+  background: #ffffff;
+  border-radius: 40rpx;
+  /* 带有主题色的呼吸阴影 */
+  box-shadow: 0 20rpx 60rpx rgba(102, 126, 234, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .canvas {
   width: 100%;
   height: 100%;
+}
+
+/* 核心技巧：在圆环中间加一个自定义的金额统计 */
+.chart-center-data {
+  position: absolute;
+  text-align: center;
+  pointer-events: none; /* 防止遮挡 Canvas 的触摸事件 */
+}
+
+.total-label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+.total-amount {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-top: 8rpx;
 }

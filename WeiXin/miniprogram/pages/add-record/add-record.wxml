@@ -1,10 +1,25 @@
-<view class="container">
+<view class="container" style="background: {{backgroundType === 'image' ? '' : backgroundColor}}">
+  <image wx:if="{{backgroundType === 'image' && backgroundImage}}" src="{{backgroundImage}}" mode="aspectFill" class="bg-image"></image>
   <view class="header">
-    <text class="title">拍照记账</text>
-    <text class="subtitle">上传小票照片，记录支出</text>
+    <view class="header-top">
+      <text class="title">记账</text>
+      <text class="settings-icon" bindtap="openSettings">⚙️</text>
+    </view>
+    <text class="subtitle" wx:if="{{!showManualForm}}">上传小票照片，记录支出</text>
+    <text class="subtitle" wx:else>手动输入，记录支出</text>
   </view>
 
-  <view class="upload-area" bindtap="chooseImage">
+  <view class="mode-switch">
+    <view class="switch-btn {{!showManualForm ? 'active' : ''}}" bindtap="toggleFormMode" wx:if="{{showManualForm}}">
+      <text>拍照记账</text>
+    </view>
+    <view class="switch-btn {{showManualForm ? 'active' : ''}}" bindtap="toggleFormMode" wx:else>
+      <text>手动记账</text>
+    </view>
+  </view>
+  
+  <block wx:if="{{!showManualForm}}">
+  <view class="upload-area" bindtap="chooseAndUploadImage">
     <image 
       wx:if="{{tempImagePath}}" 
       src="{{tempImagePath}}" 
@@ -12,44 +27,95 @@
       class="preview-image"
     />
     <view wx:else class="upload-placeholder">
-      <text class="icon">📷</text>
-      <text class="text">点击拍照/上传</text>
+      <text class="icon">📸</text>
+      <text class="text">拍小票/截图，AI 自动记账</text>
     </view>
   </view>
+</block>
 
-  <view class="form-section" wx:if="{{tempImagePath}}">
-    <view class="form-item">
-      <text class="label">金额</text>
-      <input 
-        class="input" 
-        type="digit" 
-        placeholder="请输入金额" 
-        bindinput="onAmountInput"
-        value="{{amount}}"
-      />
-    </view>
-    
-    <view class="form-item">
-      <text class="label">分类</text>
-      <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
-        <view class="picker">
-          {{categories[selectedCategory] || '请选择分类'}}
+  <block wx:if="{{showManualForm}}">
+    <view class="manual-form-section">
+      <view class="upload-area" bindtap="chooseImage">
+        <image 
+          wx:if="{{tempImagePath}}" 
+          src="{{tempImagePath}}" 
+          mode="aspectFit" 
+          class="preview-image"
+        />
+        <view wx:else class="upload-placeholder">
+          <text class="icon">📷</text>
+          <text class="text">点击添加照片（可选）</text>
         </view>
-      </picker>
-    </view>
+      </view>
+      
+      <view class="form-item">
+        <text class="label">金额</text>
+        <input 
+          class="input" 
+          type="digit" 
+          placeholder="请输入金额" 
+          bindinput="onAmountInput"
+          value="{{amount}}"
+        />
+      </view>
+      
+      <view class="form-item">
+        <text class="label">分类</text>
+        <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+          <view class="picker">
+            {{categories[selectedCategory] || '请选择分类'}}
+          </view>
+        </picker>
+      </view>
 
-    <view class="form-item">
-      <text class="label">备注</text>
-      <input 
-        class="input" 
-        placeholder="可选备注" 
-        bindinput="onNoteInput"
-        value="{{note}}"
-      />
-    </view>
+      <view class="form-item">
+        <text class="label">备注</text>
+        <input 
+          class="input" 
+          placeholder="可选备注" 
+          bindinput="onNoteInput"
+          value="{{note}}"
+        />
+      </view>
 
-    <button class="save-btn" bindtap="saveRecord">保存记录</button>
-  </view>
+      <button class="save-btn" bindtap="saveRecord">保存记录</button>
+    </view>
+  </block>
 
   <custom-tabbar currentTab="0"></custom-tabbar>
+
+  <cover-view class="settings-modal" wx:if="{{showSettings}}" bindtap="closeSettings">
+    <cover-view class="settings-content" catchtap="true">
+      <cover-view class="settings-header">
+        <cover-view class="settings-title">背景设置</cover-view>
+        <cover-view class="settings-close" bindtap="closeSettings">×</cover-view>
+      </cover-view>
+      <cover-view class="settings-body">
+        <cover-view class="settings-section">
+          <cover-view class="section-title">选择背景颜色</cover-view>
+          <cover-view class="color-list">
+            <cover-view 
+              wx:for="{{colorOptions}}" 
+              wx:key="index" 
+              class="color-item {{backgroundColor === item ? 'selected' : ''}}"
+              style="background: {{item}}"
+              bindtap="selectColor"
+              data-color="{{item}}"
+            ></cover-view>
+          </cover-view>
+        </cover-view>
+        <cover-view class="settings-section">
+          <cover-view class="section-title">上传背景图片</cover-view>
+          <cover-view class="upload-bg" bindtap="chooseBackgroundImage">
+            <cover-image wx:if="{{backgroundImage}}" src="{{backgroundImage}}" mode="aspectFill" class="bg-preview"></cover-image>
+            <cover-view wx:else class="upload-tip">
+              <cover-view class="upload-icon">📷</cover-view>
+              <cover-view class="upload-text">点击上传图片</cover-view>
+            </cover-view>
+          </cover-view>
+          <cover-view class="clear-bg" wx:if="{{backgroundImage}}" bindtap="clearBackgroundImage">清除图片</cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>
 </view>

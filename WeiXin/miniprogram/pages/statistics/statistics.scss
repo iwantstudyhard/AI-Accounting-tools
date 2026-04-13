@@ -1,27 +1,80 @@
+/* 全局容器 */
 .container {
   min-height: 100vh;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-  padding: 120rpx 40rpx 40rpx;
-  box-sizing: border-box;
+  position: relative;
+  transition: background 0.5s ease; /* 背景色切换更平滑 */
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 40rpx;
+/* 背景图层级置底 */
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
 
-  .title {
-    display: block;
-    font-size: 48rpx;
-    font-weight: bold;
-    color: #fff;
-  }
+/* 导航栏区域 */
+.header {
+  position: relative;
+  z-index: 10; /* 确保在背景图之上 */
+  padding-top: 80rpx; /* 根据不同机型状态栏高度调整 */
+  padding-bottom: 20rpx;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  height: 88rpx;
+}
+
+/* 左、中、右三等分或固定比例 */
+.nav-left, .nav-right {
+  width: 100rpx; /* 宽度必须一致，标题才能正中间 */
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.theme-icon {
+  position: absolute;  /* 开启绝对定位 */
+  left: 0rpx;         /* 距离左边留一点空隙 */
+  top: 50%;            /* 垂直居中开始 */
+  transform: translateY(-50%); /* 垂直居中修正 */
+  
+  font-size: 100rpx;   /* 你要求的大小 */
+  line-height: 1;      /* 防止行高撑开容器 */
+  transition: all 0.3s ease;
+}
+
+.nav-center {
+  flex: 1;
+  text-align: center;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 2rpx;
+}
+
+/* 点击反馈 */
+.icon-hover {
+  transform: scale(0.9);
+  opacity: 0.7;
 }
 
 .filter-tabs {
   display: flex;
   justify-content: center;
   gap: 20rpx;
-  margin-bottom: 40rpx;
+  margin-bottom: 20rpx;
 
   .tab {
     padding: 16rpx 40rpx;
@@ -35,6 +88,150 @@
       background: #fff;
       color: #667eea;
       font-weight: 500;
+    }
+  }
+}
+
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .settings-content {
+    width: 600rpx;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 24rpx;
+    overflow: hidden;
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30rpx;
+      border-bottom: 1rpx solid #f0f0f0;
+
+      .settings-title {
+        font-size: 32rpx;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .settings-close {
+        font-size: 48rpx;
+        color: #999;
+        line-height: 1;
+      }
+    }
+
+    .settings-body {
+      padding: 30rpx;
+      max-height: 60vh;
+      overflow-y: auto;
+
+      .settings-section {
+        margin-bottom: 40rpx;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .section-title {
+          font-size: 28rpx;
+          color: #333;
+          font-weight: 500;
+          margin-bottom: 20rpx;
+        }
+
+        .color-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20rpx;
+
+          .color-item {
+            width: 80rpx;
+            height: 80rpx;
+            border-radius: 16rpx;
+            border: 4rpx solid transparent;
+
+            &.selected {
+              border-color: #333;
+            }
+          }
+        }
+
+        .upload-bg {
+          width: 100%;
+          height: 200rpx;
+          background: #f5f5f5;
+          border-radius: 16rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+
+          .bg-preview {
+            width: 100%;
+            height: 100%;
+          }
+
+          .upload-tip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .upload-icon {
+              font-size: 48rpx;
+              margin-bottom: 10rpx;
+            }
+
+            .upload-text {
+              font-size: 24rpx;
+              color: #999;
+            }
+          }
+        }
+
+        .clear-bg {
+          text-align: center;
+          color: #ff6b6b;
+          font-size: 28rpx;
+          margin-top: 20rpx;
+        }
+      }
+    }
+  }
+}
+
+.category-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30rpx;
+
+  .category-picker {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 16rpx 32rpx;
+    border-radius: 30rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+
+    .category-text {
+      font-size: 28rpx;
+      color: #333;
+      margin-right: 12rpx;
+    }
+
+    .arrow {
+      font-size: 20rpx;
+      color: #999;
     }
   }
 }
@@ -62,6 +259,8 @@
   display: flex;
   justify-content: center;
   margin-bottom: 40rpx;
+  position: relative;
+  z-index: 1;
 
   .pie-chart {
     width: 400rpx;
@@ -131,22 +330,15 @@
   .record-item {
     display: flex;
     align-items: center;
-    padding: 20rpx 0;
+    justify-content: space-between;
+    padding: 24rpx 0;
     border-bottom: 1rpx solid #f0f0f0;
 
     &:last-child {
       border-bottom: none;
     }
 
-    .record-image {
-      width: 100rpx;
-      height: 100rpx;
-      border-radius: 12rpx;
-      margin-right: 20rpx;
-      background: #f5f5f5;
-    }
-
-    .record-info {
+    .record-left {
       flex: 1;
 
       .record-category {
@@ -160,7 +352,7 @@
       .record-note {
         display: block;
         font-size: 24rpx;
-        color: #999;
+        color: #666;
         margin-bottom: 6rpx;
       }
 
@@ -184,6 +376,8 @@
     color: #999;
     font-size: 28rpx;
   }
+}
+
 .nav-section {
   position: fixed;
   bottom: 0;
@@ -196,19 +390,110 @@
 
 .bottom-padding {
   height: 120rpx;
-} background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.9) 20rpx);
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}
 
-  .add-btn {
-    display: block;
-    width: 100%;
-    height: 88rpx;
-    background: #fff;
-    color: #667eea;
-    border-radius: 44rpx;
-    font-size: 32rpx;
-    font-weight: 500;
-    text-align: center;
-    line-height: 88rpx;
-  }
+/* 遮罩层与定位 */
+.detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* 核心：把框变大，视觉更舒展 */
+.detail-content {
+  position: relative;
+  width: 90%; /* 占据屏幕大部分宽度 */
+  background: #ffffff;
+  border-radius: 32rpx; /* 更圆润的边角 */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40rpx; /* 底部留出呼吸空间 */
+}
+
+/* 头部样式 */
+.detail-header {
+  height: 110rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.detail-close {
+  font-size: 50rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+/* 图片区域：固定一个优雅的高度 */
+.detail-image-area {
+  width: 100%;
+  height: 400rpx; 
+  background: #fdfdfd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.detail-image {
+  width: 85%;
+  height: 100%;
+}
+
+/* 文字排版区 */
+.detail-info {
+  padding: 0 40rpx;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 28rpx; /* 行间距拉大 */
+  line-height: 1.5;
+}
+
+.detail-label {
+  color: #999;
+  font-size: 28rpx;
+  min-width: 100rpx; /* 保证左侧对齐 */
+}
+
+/* 右侧数值区：支持自动换行 */
+.detail-value {
+  color: #333;
+  font-size: 28rpx;
+  text-align: right;
+  flex: 1; 
+  word-break: break-all; /* 即使是一长串英文/数字也会强制换行，不会撑爆弹窗 */
+}
+
+/* 金额高亮 */
+.detail-amount {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #667eea;
 }
